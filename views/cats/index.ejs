@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <% if(cats.length === 0) {%>
+        <h2>There are no cats yet!</h2>
+        <a href="/cats/new">Create one now!</a>
+    <% } else { %> 
+    <ul class="cats">
+        <% cats.forEach((cat)=>{ %>
+            <li><a href="/cats/<%=cat._id%>"><%= cat.name %></a> is <%=cat.age%> years old</li>
+        <% }) %>
+    </ul>
+    <% } %>
+</body>
+</html>
