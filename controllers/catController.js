@@ -5,8 +5,14 @@ const router = express.Router();
 // /cats
 // Gives a page displaying all the cats
 router.get('/', async (req, res)=>{
+    if(!req.session.visits){
+        req.session.visits = 1;
+    }else{
+        req.session.visits += 1
+    }
     const cats = await Cat.find();
     res.render('cats/index.ejs', {
+        visits: req.session.visits,
         cats: cats
     })
 })
