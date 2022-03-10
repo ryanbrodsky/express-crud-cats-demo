@@ -8,6 +8,7 @@
 </head>
 <body>
     <h1><%= cat.name %></h1>
+    <h3>Created by: <%= cat.user.username %></h3>
     <p><%= cat.age %> years old</p>
     <a href="/cats/<%=cat._id%>/edit"><button>Edit</button></a>
     <form action="/cats/<%= cat._id %>?_method=DELETE" method="post">

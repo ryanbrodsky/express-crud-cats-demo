@@ -21,26 +21,25 @@ router.post("/login", async (req, res)=>{
                 req.session.userId = possibleUser._id;
                 res.redirect("/cats")
             }else{
-                res.redirect("/login")
+                res.redirect("/users/login")
             }
         }else{
             // Let them try again?
-            res.redirect("/login")
+            res.redirect("/users/login")
         }
     }catch(err){
         console.log(err);
         res.send(500)
     }
 })
+router.get('/logout', (req, res)=>{
+    req.session.destroy(()=>{
+        res.redirect("/")
+    })
+})
 router.get('/', async (req, res)=>{
-    if(!req.session.visits){
-        req.session.visits = 1;
-    }else{
-        req.session.visits += 1
-    }
-    const users = await User.find();
+    const users = await User.find({username: req.query.username});
     res.render('users/index.ejs', {
-        visits: req.session.visits,
         users: users
     })
 })
@@ -80,10 +79,14 @@ router.post('/', async (req, res)=>{
 // SHOW THE FORM TO EDIT A USER
 router.get('/:id/edit', async (req, res)=>{
     try{
-        const user = await User.findById(req.params.id)
-        res.render('users/edit.ejs', {
-            user: user
-        })
+        if(req.session.userId === req.params.id){
+            const user = await User.findById(req.params.id)
+            res.render('users/edit.ejs', {
+                user: user
+            })
+        }else{
+            throw new Error("You're NOT THAT USER!")
+        }
     }catch(err){
         res.sendStatus(500)
     }

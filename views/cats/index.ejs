@@ -14,7 +14,9 @@
     <% } else { %> 
     <ul class="cats">
         <% cats.forEach((cat)=>{ %>
-            <li><a href="/cats/<%=cat._id%>"><%= cat.name %></a> is <%=cat.age%> years old</li>
+            <% if(cat.user == userId){ %>
+                <li><a href="/cats/<%=cat._id%>"><%= cat.name %></a> is <%=cat.age%> years old</li>
+            <% } %>
         <% }) %>
     </ul>
     <% } %>

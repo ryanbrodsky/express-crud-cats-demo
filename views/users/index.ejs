@@ -8,5 +8,12 @@
 </head>
 <body>
     <h1>Here are all the users of this fine application</h1>
+    <form action="/users">
+        <input type="text" name="username">
+        <button type="submit">Search for users</button>
+    </form>
+    <% users.forEach((user)=>{ %>
+        <a href="/users/<%=user._id%>"><%= user.username %></a>
+    <% }) %>
 </body>
 </html>

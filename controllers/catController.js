@@ -11,10 +11,10 @@ router.get('/', async (req, res)=>{
         req.session.visits += 1
     }
     const cats = await Cat.find();
-    res.render('cats/index.ejs', {
-        visits: req.session.visits,
-        cats: cats
-    })
+    // Demo that res.locals is the same as the object passed to render
+    res.locals.visits = req.session.visits;
+    res.locals.cats = cats;
+    res.render('cats/index.ejs')
 })
 // NEW: GET
 // /cats/new
@@ -27,7 +27,7 @@ router.get('/new', (req, res)=>{
 // /cats/:id
 // Shows a page displaying one cat
 router.get('/:id', async (req, res)=>{
-    const cat = await Cat.findById(req.params.id)
+    const cat = await Cat.findById(req.params.id).populate('user')
     res.render("cats/show.ejs", {
         cat: cat
     })
@@ -37,6 +37,7 @@ router.get('/:id', async (req, res)=>{
 // /cats
 // Creates an actual cat, then...?
 router.post('/', async (req, res)=>{
+    req.body.user = req.session.userId
     const newCat = await Cat.create(req.body);
     console.log(newCat)
     res.redirect('/cats')
